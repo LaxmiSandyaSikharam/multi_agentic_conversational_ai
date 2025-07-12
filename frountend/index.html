@@ -1,0 +1,160 @@
+<<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zenith ‑ Conversational AI Assistant</title>
+
+    <!-- ░░ Tailwind CSS (via CDN) ░░ -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ░░ Google Font ░░ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ░░ App Style Overrides ░░ -->
+    <style>
+      html {
+        font-family: 'Inter', sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: theme('colors.slate.400');
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body class="h-full bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 transition-colors">
+    <div class="min-h-full flex flex-col items-center py-6 px-4">
+      <!-- Header -->
+      <header class="w-full max-w-2xl flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-7 h-7 text-blue-600 dark:text-blue-400"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M11.412 2.662a1.875 1.875 0 011.176 0l8.25 2.906a1.875 1.875 0 011.212 1.77v9.324a1.875 1.875 0 01-1.213 1.77l-8.25 2.906a1.875 1.875 0 01-1.175 0l-8.25-2.906A1.875 1.875 0 012 16.662V7.338a1.875 1.875 0 011.213-1.77l8.25-2.906z"
+            />
+          </svg>
+          Zenith AI
+        </h1>
+        <button
+          id="darkToggle"
+          class="rounded-full p-2 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-6 h-6 text-slate-700 dark:text-slate-200"
+          >
+            <path d="M12 3v1M16.24 7.76l.7.7M21 12h-1M16.24 16.24l-.7.7M12 19v1M7.76 16.24l-.7-.7M3 12h1M7.76 7.76l.7-.7" />
+            <circle cx="12" cy="12" r="5" />
+          </svg>
+        </button>
+      </header>
+
+      <!-- Chat window -->
+      <div
+        id="chatArea"
+        class="flex flex-col gap-4 w-full max-w-2xl bg-white/80 backdrop-blur-sm border border-slate-200 dark:bg-slate-900/60 dark:border-slate-700 rounded-2xl p-6 overflow-y-auto grow"
+        style="max-height: 70vh"
+      ></div>
+
+      <!-- Input -->
+      <form
+        id="chatForm"
+        class="w-full max-w-2xl flex items-center gap-3 mt-4"
+      >
+        <input
+          id="userInput"
+          type="text"
+          required
+          placeholder="Ask me anything…"
+          class="flex-1 px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          type="submit"
+          class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[.97] text-white font-medium transition shadow-lg shadow-blue-600/20 focus:outline-none"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+
+    <!-- ░░ JS ░░ -->
+    <script>
+      const chatArea = document.getElementById('chatArea');
+      const chatForm = document.getElementById('chatForm');
+      const userInput = document.getElementById('userInput');
+      const darkToggle = document.getElementById('darkToggle');
+
+      darkToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('zenithTheme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      });
+      // Persist theme
+      if (localStorage.getItem('zenithTheme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+
+      chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        // Append user bubble
+        appendBubble(message, 'user');
+        userInput.value = '';
+
+        // Loader bubble
+        const loader = appendBubble('…', 'bot', true);
+        try {
+          const res = await fetch('http://127.0.0.1:8000/chat/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session_id: 'test-session', message, user_id: 123 }),
+          });
+          const data = await res.json();
+          loader.remove();
+          appendBubble(data.reply || 'No response 🙈', 'bot');
+        } catch (err) {
+          loader.remove();
+          appendBubble('⚠️ Error reaching server', 'bot');
+          console.error(err);
+        }
+      });
+
+      function appendBubble(text, sender = 'bot', isLoader = false) {
+        const bubble = document.createElement('div');
+        bubble.className = `max-w-[85%] whitespace-pre-wrap leading-relaxed px-4 py-3 rounded-2xl shadow-sm text-sm md:text-base ${
+          sender === 'user'
+            ? 'self-end bg-blue-600 text-white rounded-br-none'
+            : 'self-start bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-none'
+        }`;
+        bubble.textContent = text;
+        if (isLoader) bubble.classList.add('animate-pulse');
+        chatArea.appendChild(bubble);
+        chatArea.scrollTop = chatArea.scrollHeight;
+        return bubble;
+      }
+    </script>
+  </body>
+</html>

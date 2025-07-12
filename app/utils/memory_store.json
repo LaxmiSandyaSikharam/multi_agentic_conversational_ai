@@ -1,0 +1,12 @@
+{
+  "sandya-session": [
+    "User: What is covered in the Hackathon Internal Knowledge Base?\nAI: The Hackathon Internal Knowledge Base covers information such as participant profiles, team assignments, project details, schedule, resources, and communication protocols.",
+    "User: how many unique Associate 4 are there in the Hackathon Internal Knowledge Base?\nAI: There is no information provided in the data about the number of unique Associate 4 participants in the Hackathon Internal Knowledge Base.",
+    "User: what is it about?\nAI: The information provided in the dataset seems to be related to participant profiles in some sort of event or competition. Each entry includes details such as the participant's name, email, associated characters, financial information, address, and pricing details.",
+    "User: can you tell me the min and max pricing details?\nAI: The minimum pricing detail in the dataset is $86.00 Rent/SF/Year, and the maximum pricing detail is $109.00 Rent/SF/Year."
+  ],
+  "sandya": [
+    "User: can you give me the max annual rent ?\nAI: The maximum annual rent in the provided information is $2,109,184 for Property 13 on 1412 Broadway.",
+    "User: what is this dataset about?\nAI: This dataset appears to be about various properties (locations, square footage, rent prices, etc.) and tenants associated with those properties."
+  ]
+}
