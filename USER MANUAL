@@ -1,0 +1,94 @@
+
+# User Manual
+
+This guide provides instructions for setting up, running, and using the Multi-Agentic Conversational AI System.
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+- Python 3.10 or higher
+- pip (Python package manager)
+- Git
+- (Optional) Node.js and npm if you plan to add a frontend
+
+### Steps to Set Up the Backend
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/LaxmiSandyaSikharam/multi_agentic_conversational_ai.git
+   cd multi_agentic_conversational_ai
+   ```
+
+2. **Set up a virtual environment**
+   ```bash
+   python -m venv venv
+   # Activate on Windows
+   venv\Scripts\activate
+   # Or activate on Mac/Linux
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure environment variables**
+   - Create a `.env` file in the root directory:
+     ```
+     OPENAI_API_KEY=your_openai_api_key_here
+     ```
+
+5. **Run the API server**
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+6. Open your browser and navigate to:  
+   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+## API Endpoints Overview
+
+### Chatbot API
+- **POST** `/chat`
+- Send a user message and receive an AI response.
+
+### Document Upload API
+- **POST** `/upload_docs`
+- Upload documents for Retrieval-Augmented Generation (RAG).
+
+### CRM APIs
+- **POST** `/crm/create_user` – Add a new user.
+- **GET** `/crm/conversations/{id}` – Fetch user conversation history.
+
+For full interactive API documentation, visit:  
+[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+## Example Usage
+
+### Chat API Request
+```json
+POST /chat
+{
+  "message": "Hello, what can you do?"
+}
+```
+
+Response:
+```json
+{
+  "response": "Hi! I can assist you with knowledge retrieval and user management. How can I help?"
+}
+```
+
+---
+
+## Notes
+- Keep your `OPENAI_API_KEY` secure and do not share it publicly.  
+- Ensure port `8000` is available before running the API server.  
+
