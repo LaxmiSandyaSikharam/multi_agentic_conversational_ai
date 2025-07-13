@@ -67,7 +67,7 @@ python -m venv venv
 
 # Activate virtual environment
 # On Windows:
-venv\Scripts\activate
+venv\Scriptsctivate
 # On Mac/Linux:
 source venv/bin/activate
 ```
@@ -121,6 +121,46 @@ Explore all endpoints at: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/doc
 
 ---
 
+## User Manual
+
+This section provides additional details for interacting with the API.
+
+### Features
+
+- **Conversational Chatbot with RAG**
+  - Accepts user messages via API.
+  - Retrieves relevant documents dynamically from the internal knowledge base.
+  - Integrates Large Language Models (LLM) for contextual awareness.
+
+- **CRM Integration**
+  - Captures and stores user details like name, email, and preferences.
+  - Provides API endpoints to view, update, or delete CRM data.
+
+- **Interactive API Documentation**
+  - Swagger UI available at `/docs` for easy testing and exploration.
+
+---
+
+### Example API Usage
+
+#### Chat API Example
+**Request**
+```json
+POST /chat
+{
+  "message": "Hello, what can you do?"
+}
+```
+
+**Response**
+```json
+{
+  "response": "Hi! I can assist you with knowledge retrieval and user management. How can I help?"
+}
+```
+
+---
+
 ## Contributing
 
 1. Fork the repository
@@ -141,3 +181,4 @@ This project is licensed under the MIT License.
 - [OpenAI](https://openai.com/)
 - [HuggingFace Sentence Transformers](https://www.sbert.net/)
 - [FAISS](https://faiss.ai/)
+
