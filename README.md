@@ -1,137 +1,143 @@
-# 🧠 Multi-Agentic Conversational AI System
 
-A modular FastAPI application that integrates **LLM**, **RAG (Retrieval-Augmented Generation)**, and **CRM logging** to provide conversational capabilities grounded in document knowledge.
+# Multi-Agentic Conversational AI System
 
----
-
-## 🚀 Features
-
-- 🤖 LLM-based chatbot using OpenAI
-- 📄 Document upload and ingestion for context-aware conversation
-- 📚 Embedding and vector search using `sentence-transformers` and `FAISS`
-- 🧠 Memory persistence with user sessions
-- 🧾 Lightweight CRM module to log user conversations
-- 🧪 Interactive Swagger UI for testing
+This project is a Python-based RESTful API application designed to enable natural language conversations with a Large Language Model (LLM). It integrates Retrieval-Augmented Generation (RAG) and a lightweight CRM system to store and retrieve user information during conversations.
 
 ---
 
-## 📁 Folder Structure
+## Features
 
+- **Conversational Chatbot with RAG**
+  - Accepts user messages via API.
+  - Retrieves relevant documents dynamically from the internal knowledge base.
+  - Integrates LLM (OpenAI GPT API) for contextual awareness.
+
+- **CRM Integration**
+  - Captures and stores user details like name, email, preferences.
+  - Provides API endpoints to view, update, or delete CRM data.
+
+- **API-first Design**
+  - Swagger UI available at `/docs` for testing.
+
+- **Scalable Structure**
+  - Modular design for easy future integration of frontend (React/Vue).
+
+---
+
+## Folder Structure
+```
 multi_agentic_conversational_ai/
-├── app/
-│ ├── main.py # FastAPI app entrypoint
-│ ├── config.py # Configuration loader
-│ ├── routes/ # API route handlers
-│ ├── services/ # Core services (LLM, RAG, CRM)
-│ └── utils/ # Helpers (memory, vector store, loader)
-├── data/uploads/ # Uploaded knowledge base files (CSV/PDF/TXT)
-├── db/ # SQLite database for CRM logs
-├── .env # API keys and settings
-├── requirements.txt # Python dependencies
-└── README.md # You’re reading it!
-
-yaml
-
-
+│
+├── app/               # Backend API and logic
+│   ├── routes/        # API route definitions
+│   ├── services/      # Business logic for LLM, RAG, CRM
+│   ├── utils/         # Utility scripts (e.g., vector store)
+│   ├── main.py        # Entry point for the FastAPI server
+│   ├── config.py      # Configuration and environment loading
+│
+├── data/              # Placeholder for datasets or static files
+├── db/                # Placeholder for database files (SQLite, etc.)
+├── requirements.txt   # Python dependencies
+├── .env               # Environment variables (add your API keys here)
+├── README.md          # Project documentation
+```
 
 ---
 
-## ⚙️ Setup Instructions
+## Getting Started
 
-### ✅ 1. Clone and Navigate
+### Prerequisites
+- Python 3.10+ installed ([Download Python](https://www.python.org/downloads/))
+- pip package manager (comes with Python)
+- (Optional for frontend) Node.js & npm ([Download Node.js](https://nodejs.org/))
 
+---
+
+### Backend Setup
+
+1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/<your-username>/multi_agentic_conversational_ai.git
 cd multi_agentic_conversational_ai
-✅ 2. Create a Conda Environment
-bash
+```
 
-conda create -n agentic-ai python=3.10 -y
-conda activate agentic-ai
-✅ 3. Install Requirements
-bash
+2. **Set up virtual environment**
+```bash
+python -m venv venv
 
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On Mac/Linux:
+source venv/bin/activate
+```
+
+3. **Install Python dependencies**
+```bash
 pip install -r requirements.txt
-If you face issues with faiss-cpu or sentence-transformers, install manually:
+```
 
-bash
+4. **Set up environment variables**
+- Rename `.env.example` (if exists) to `.env`.
+- Add your OpenAI API key and other configurations.
+```bash
+OPENAI_API_KEY=sk-xxxxxxx
+```
 
-pip install faiss-cpu sentence-transformers
-🔐 .env File Setup
-Create a .env file in the root:
-
-ini
-
-OPENAI_API_KEY=your_openai_key_here
-▶️ Running the App
-bash
-
+5. **Run the FastAPI server**
+```bash
 uvicorn app.main:app --reload
-Then open http://127.0.0.1:8000/docs to explore Swagger UI.
+```
 
-📂 Upload Your Dataset
-Go to POST /upload_docs in Swagger UI.
-
-Upload a .csv, .txt, or .pdf file.
-
-The file is stored in data/uploads/.
-
-Embeddings are generated and stored for retrieval.
-
-💬 Start Chatting
-Use POST /chat/ with:
-
-json
-
-{
-  "session_id": "test-session",
-  "message": "What did I upload?",
-  "user_id": 1
-}
-The chatbot will answer using the uploaded documents.
-
-📋 CRM Endpoints
-POST /crm/create_user: Create user profile.
-
-PUT /crm/update_user: Update user preferences.
-
-GET /crm/conversations/{user_id}: Fetch chat logs.
-
-🧠 Tech Stack
-Layer	Tool
-API Server	FastAPI
-LLM	OpenAI GPT via API
-Embedding	Sentence Transformers
-Vector Store	FAISS
-Memory	Session-based in Python
-Storage	SQLite3
-
-📌 Notes
-Tested on Python 3.10 with Anaconda
-
-Windows users may need to run terminal in Admin mode to avoid caching/symlink errors from HuggingFace
-
-Compatible with .csv, .txt, and .pdf documents
-
-🧪 Sample API Test
-bash
-
-curl -X POST http://127.0.0.1:8000/chat/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "session_id": "demo-session",
-    "message": "Summarize the uploaded document",
-    "user_id": 1
-}'
-🧑‍💻 Author
-Laxmi Sandya Sikharam
-Data Analyst | AI Enthusiast | Builder
-
-📃 License
-MIT License © 2025 Laxmi Sandya Sikharam
-
-yaml
+6. **Test API in Browser**
+Open: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
 
-Would you like a `.pdf` version or want this uploaded into your project directly?
+### Frontend Setup (Optional)
+Currently, there is no frontend bundled. You can:
+- Build a React or Vue frontend.
+- Serve it in the `frontend/` directory.
+
+**Example Placeholder Steps:**
+```bash
+cd frontend
+npm install
+npm run build
+```
+
+---
+
+## API Endpoints
+
+| Endpoint                  | Method | Description                               |
+|---------------------------|--------|-------------------------------------------|
+| `/chat`                   | POST   | Send a message to the LLM chatbot         |
+| `/upload_docs`            | POST   | Upload documents for RAG context          |
+| `/crm/create_user`        | POST   | Create a new CRM user                     |
+| `/crm/conversations/{id}` | GET    | Retrieve user conversation history        |
+
+Explore all endpoints at: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add YourFeature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
+
+---
+
+## License
+This project is licensed under the MIT License.
+
+---
+
+## Acknowledgements
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [OpenAI](https://openai.com/)
+- [HuggingFace Sentence Transformers](https://www.sbert.net/)
+- [FAISS](https://faiss.ai/)
